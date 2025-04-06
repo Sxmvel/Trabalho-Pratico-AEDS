@@ -119,7 +119,7 @@ public class Trabalho_Pratico_AEDS {
         }
 
         System.out.println("");
-        System.out.println("Gerando Vetores aleatorios usando o couting sort:");
+        System.out.println("Gerando Vetores aleatorios: ");
         for (int i = 0; i < tamanho_Vetores.length; i++) {
             int[] vetores_Preencheer = new int[tamanho_Vetores[i]];
             Random seedFixa = new Random(12345L);
@@ -189,8 +189,41 @@ public class Trabalho_Pratico_AEDS {
 
     }
 
-    public static void main(String[] args) {
-        ordenacao_CountingSort();
+    public static void ordenacao_RadixSort() {
+        int[] tamanho_Vetores = {10, 20, 30};
 
+        System.out.print("Gerando array aleatorios: ");
+        for (int i = 0; i < tamanho_Vetores.length; i++) {
+            int[] vetores_Ordenar = new int[tamanho_Vetores[i]];
+            Random seedFixa = new Random(12345L);
+            for (int j = 0; j < vetores_Ordenar.length; j++) {
+                vetores_Ordenar[j] = seedFixa.nextInt(100);
+            }
+            System.out.println("");
+            for (int j = 0; j < vetores_Ordenar.length; j++) {
+                System.out.print(vetores_Ordenar[j] + " ");
+            }
+        }
+
+        System.out.println("\n");
+        System.out.print("Array Ordenando: ");
+        for (int i = 0; i < tamanho_Vetores.length; i++) {
+            int[] vetores_Ordenar = new int[tamanho_Vetores[i]];
+            Random seedFixa = new Random(12345L);
+            for (int j = 0; j < vetores_Ordenar.length; j++) {
+                vetores_Ordenar[j] = seedFixa.nextInt(100);
+            }
+            System.out.println("");
+            for (int j = 0; j < vetores_Ordenar.length; j++) {
+                RadixSort.radixSort(vetores_Ordenar);
+                System.out.print(vetores_Ordenar[j] + " ");
+            }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        //ordenacao_CountingSort();
+        ordenacao_RadixSort();
     }
 }
