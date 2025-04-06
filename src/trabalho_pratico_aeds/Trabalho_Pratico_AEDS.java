@@ -2,83 +2,87 @@ package trabalho_pratico_aeds;
 
 import java.util.Random;
 
-
 public class Trabalho_Pratico_AEDS {
 
-    public static void countingSortCrescente(int[] Array) {
-        int maior_Chave = 0;
+    public static void countingSortCrescente(int[] numeros) {
+        int tamanho = numeros.length;
 
-        for (int i = 1; i < Array.length; i++) {
-            if (Array[i] > maior_Chave) {
-                maior_Chave = Array[i];
+        // 1. Encontra o maior valor para saber o tamanho do vetor de contagem
+        int maiorValor = numeros[0];
+        for (int i = 1; i < tamanho; i++) {
+            if (numeros[i] > maiorValor) {
+                maiorValor = numeros[i];
             }
         }
 
-        // Cria array de contagem
-        int[] contagem_De_Chaves = new int[maior_Chave + 1];
+        // 2. Cria o array de contagem (frequência)
+        int[] contador = new int[maiorValor + 1]; // Índices vão de 0 até o maior número
 
-        // Conta a frequência de cada elemento
-        for (int i = 0; i < Array.length; i++) {
-            int num = Array[i];
-            contagem_De_Chaves[num]++;
+        // 3. Conta quantas vezes cada valor aparece
+        for (int i = 0; i < tamanho; i++) {
+            contador[numeros[i]]++;
         }
 
-        // Acumula os valores
-        for (int i = 1; i < contagem_De_Chaves.length; i++) {
-            contagem_De_Chaves[i] += contagem_De_Chaves[i - 1];
+        // 4. Soma acumulada: transforma contador[i] em posição final do elemento no array ordenado
+        for (int i = 1; i < contador.length; i++) {
+            contador[i] += contador[i - 1];
         }
 
-        // Cria array de saída
-        int[] Array_Ordenado = new int[Array.length];
+        // 5. Cria um array temporário para guardar os elementos ordenados
+        int[] resultadoOrdenado = new int[tamanho];
 
-        // Preenche o array de saída (de trás para frente) - Para manter a estabilidade do algortimo
-        for (int i = Array.length - 1; i >= 0; i--) {
-            int num = Array[i];
-            Array_Ordenado[contagem_De_Chaves[num] - 1] = num;
-            contagem_De_Chaves[num]--;
+        // 6. Preenche o array ordenado (de trás pra frente para manter estabilidade)
+        for (int i = tamanho - 1; i >= 0; i--) {
+            int valorAtual = numeros[i];
+            int posicaoOrdenada = contador[valorAtual] - 1;
+            resultadoOrdenado[posicaoOrdenada] = valorAtual;
+            contador[valorAtual]--;
         }
 
-        // Copia o resultado para o array original
-        for (int i = 0; i < Array.length; i++) {
-            Array[i] = Array_Ordenado[i];
+        // 7. Copia o resultado de volta para o array original
+        for (int i = 0; i < tamanho; i++) {
+            numeros[i] = resultadoOrdenado[i];
         }
     }
 
-    public static void countingSortDecrescente(int[] arr) {
-        // Encontra o maior chave
-        int max = arr[0];
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i] > max) {
-                max = arr[i];
+    public static void countingSortDecrescente(int[] numeros) {
+        int tamanho = numeros.length;
+
+        // 1. Encontra o maior valor do array
+        int maiorValor = numeros[0];
+        for (int i = 1; i < tamanho; i++) {
+            if (numeros[i] > maiorValor) {
+                maiorValor = numeros[i];
             }
         }
 
-        // Cria array de contagem
-        int[] count = new int[max + 1];
+        // 2. Cria o array de contagem
+        int[] contador = new int[maiorValor + 1];
 
-        // Conta a frequência de cada elemento
-        for (int i = 0; i < arr.length; i++) {
-            count[arr[i]]++;
+        // 3. Conta quantas vezes cada número aparece
+        for (int i = 0; i < tamanho; i++) {
+            contador[numeros[i]]++;
         }
 
-        // Acumula os valores da direita para a esquerda
-        for (int i = count.length - 2; i >= 0; i--) {
-            count[i] += count[i + 1];
+        // 4. Acumula as posições, MAS do fim para o início (decrescente)
+        for (int i = contador.length - 2; i >= 0; i--) {
+            contador[i] += contador[i + 1];
         }
 
-        // Cria array de saída
-        int[] sorted = new int[arr.length];
+        // 5. Cria array para o resultado ordenado
+        int[] resultadoOrdenado = new int[tamanho];
 
-        // Preenche o array de saída (de trás para frente para manter estabilidade)
-        for (int i = arr.length - 1; i >= 0; i--) {
-            int num = arr[i];
-            sorted[count[num] - 1] = num;
-            count[num]--;
+        // 6. Coloca os valores no array de forma decrescente (mantendo estabilidade)
+        for (int i = tamanho - 1; i >= 0; i--) {
+            int valorAtual = numeros[i];
+            int posicaoOrdenada = contador[valorAtual] - 1;
+            resultadoOrdenado[posicaoOrdenada] = valorAtual;
+            contador[valorAtual]--;
         }
 
-        // Copia o resultado para o array original
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = sorted[i];
+        // 7. Copia o resultado de volta para o array original
+        for (int i = 0; i < tamanho; i++) {
+            numeros[i] = resultadoOrdenado[i];
         }
     }
 
@@ -113,7 +117,7 @@ public class Trabalho_Pratico_AEDS {
             }
             System.out.print("Vetor de tamanho: " + tamanho_Vetores[i] + " gerado e ordenado Decrescente!\n");
         }
-        
+
         System.out.println("");
         System.out.println("Gerando Vetores aleatorios usando o couting sort:");
         for (int i = 0; i < tamanho_Vetores.length; i++) {
@@ -128,8 +132,65 @@ public class Trabalho_Pratico_AEDS {
 
     }
 
+    public class RadixSort {
+
+        // Função que retorna o maior número do array
+        public static int encontrarMaiorNumero(int[] numeros) {
+            int maior = numeros[0];
+            for (int i = 1; i < numeros.length; i++) {
+                if (numeros[i] > maior) {
+                    maior = numeros[i];
+                }
+            }
+            return maior;
+        }
+
+        // Função que faz a ordenação por um dígito específico (usando Counting Sort)
+        public static void ordenarPorDigito(int[] numeros, int posicaoDecimal) {
+            int tamanho = numeros.length;
+            int[] resultadoOrdenado = new int[tamanho]; // Array temporário para guardar os valores ordenados
+            int[] contadorDigitos = new int[10]; // Array para contar os dígitos (0 a 9)
+
+            // 1. Conta a frequência dos dígitos naquela posição decimal (unidade, dezena, centena...)
+            for (int i = 0; i < tamanho; i++) {
+                int digito = (numeros[i] / posicaoDecimal) % 10;
+                contadorDigitos[digito]++;
+            }
+
+            // 2. Transforma as contagens em posições reais no array de saída
+            for (int i = 1; i < 10; i++) {
+                contadorDigitos[i] += contadorDigitos[i - 1];
+            }
+
+            // 3. Monta o array de saída (ordenação estável: de trás pra frente)
+            for (int i = tamanho - 1; i >= 0; i--) {
+                int digito = (numeros[i] / posicaoDecimal) % 10;
+                int posicao = contadorDigitos[digito] - 1;
+                resultadoOrdenado[posicao] = numeros[i];
+                contadorDigitos[digito]--;
+            }
+
+            // 4. Copia o array ordenado de volta para o array original
+            for (int i = 0; i < tamanho; i++) {
+                numeros[i] = resultadoOrdenado[i];
+            }
+        }
+
+        // Função principal que aplica o Radix Sort
+        public static void radixSort(int[] numeros) {
+            // Passo 1: Encontrar o número com mais dígitos
+            int maiorNumero = encontrarMaiorNumero(numeros);
+
+            // Passo 2: Ordenar cada dígito, começando pela unidade (1), depois dezena (10), centena (100), etc.
+            for (int posicaoDecimal = 1; maiorNumero / posicaoDecimal > 0; posicaoDecimal *= 10) {
+                ordenarPorDigito(numeros, posicaoDecimal);
+            }
+        }
+
+    }
+
     public static void main(String[] args) {
         ordenacao_CountingSort();
-       
+
     }
 }
