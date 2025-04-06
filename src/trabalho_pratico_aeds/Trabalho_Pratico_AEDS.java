@@ -1,5 +1,7 @@
 package trabalho_pratico_aeds;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Trabalho_Pratico_AEDS {
@@ -186,6 +188,55 @@ public class Trabalho_Pratico_AEDS {
             }
         }
 
+    }
+
+    public class BucketSortInteirosCrescente {
+
+        public static void bucketSortCrescente(int[] numeros) {
+            int tamanho = numeros.length;
+
+            if (tamanho <= 0) {
+                return;
+            }
+
+            // 1. Encontra o maior e menor valor
+            int menor = numeros[0];
+            int maior = numeros[0];
+            for (int num : numeros) {
+                if (num < menor) {
+                    menor = num;
+                }
+                if (num > maior) {
+                    maior = num;
+                }
+            }
+
+            int quantidadeBaldes = maior - menor + 1;
+
+            // 2. Criar os baldes
+            ArrayList<Integer>[] baldes = new ArrayList[quantidadeBaldes];
+            for (int i = 0; i < quantidadeBaldes; i++) {
+                baldes[i] = new ArrayList<>();
+            }
+
+            // 3. Distribuir os números nos baldes
+            for (int num : numeros) {
+                baldes[num - menor].add(num); // Normaliza com o menor valor
+            }
+
+            // 4. Ordenar cada balde (crescente)
+            for (ArrayList<Integer> balde : baldes) {
+                Collections.sort(balde);
+            }
+
+            // 5. Concatenar os baldes de volta no array
+            int indice = 0;
+            for (ArrayList<Integer> balde : baldes) {
+                for (int valor : balde) {
+                    numeros[indice++] = valor;
+                }
+            }
+        }
     }
 
     public static void ordenacao_CountingSort() {
