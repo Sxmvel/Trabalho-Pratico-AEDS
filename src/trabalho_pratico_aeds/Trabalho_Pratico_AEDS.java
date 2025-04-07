@@ -190,50 +190,85 @@ public class Trabalho_Pratico_AEDS {
 
     }
 
-    public class BucketSortInteirosCrescente {
+    public class BucketSort {
 
-        public static void bucketSortCrescente(int[] numeros) {
+        // Função principal do Bucket Sort para números inteiros
+        public static void bucketSort(int[] numeros) {
             int tamanho = numeros.length;
 
-            if (tamanho <= 0) {
-                return;
-            }
-
-            // 1. Encontra o maior e menor valor
-            int menor = numeros[0];
-            int maior = numeros[0];
-            for (int num : numeros) {
-                if (num < menor) {
-                    menor = num;
-                }
-                if (num > maior) {
-                    maior = num;
+            // Encontrar o maior valor no vetor
+            int maiorValor = numeros[0];
+            for (int i = 1; i < tamanho; i++) {
+                if (numeros[i] > maiorValor) {
+                    maiorValor = numeros[i];
                 }
             }
 
-            int quantidadeBaldes = maior - menor + 1;
+            // Definir quantos baldes vamos usar
+            int quantidadeBaldes = 10;
 
-            // 2. Criar os baldes
+            // Criar os baldes (listas)
             ArrayList<Integer>[] baldes = new ArrayList[quantidadeBaldes];
             for (int i = 0; i < quantidadeBaldes; i++) {
                 baldes[i] = new ArrayList<>();
             }
 
-            // 3. Distribuir os números nos baldes
-            for (int num : numeros) {
-                baldes[num - menor].add(num); // Normaliza com o menor valor
+            // Colocar cada número no balde correspondente
+            for (int i = 0; i < tamanho; i++) {
+                int posicaoBalde = (numeros[i] * quantidadeBaldes) / (maiorValor + 1); // cálculo proporcional
+                baldes[posicaoBalde].add(numeros[i]);
             }
 
-            // 4. Ordenar cada balde (crescente)
-            for (ArrayList<Integer> balde : baldes) {
-                Collections.sort(balde);
+            // Ordenar cada balde individualmente
+            for (int i = 0; i < quantidadeBaldes; i++) {
+                Collections.sort(baldes[i]); // pode trocar por Insertion Sort se quiser fazer manual
             }
 
-            // 5. Concatenar os baldes de volta no array
+            // Juntar os baldes no vetor original
             int indice = 0;
-            for (ArrayList<Integer> balde : baldes) {
-                for (int valor : balde) {
-                    numeros[indice++] = valor;
+            for (int i = 0; i < quantidadeBaldes; i++) {
+                for (int j = 0; j < baldes[i].size(); j++) {
+                    numeros[indice] = baldes[i].get(j);
+                    indice++;
+                }
+            }
+        }
+
+        // 🆕 Novo método: ordena em ordem decrescente
+        public static void bucketSortDecrescente(int[] numeros) {
+            int tamanho = numeros.length;
+
+            int maiorValor = numeros[0];
+            for (int i = 1; i < tamanho; i++) {
+                if (numeros[i] > maiorValor) {
+                    maiorValor = numeros[i];
+                }
+            }
+
+            int quantidadeBaldes = 10;
+
+            ArrayList<Integer>[] baldes = new ArrayList[quantidadeBaldes];
+            for (int i = 0; i < quantidadeBaldes; i++) {
+                baldes[i] = new ArrayList<Integer>();
+            }
+
+            // Distribui os números nos baldes
+            for (int i = 0; i < tamanho; i++) {
+                int posicaoBalde = (numeros[i] * quantidadeBaldes) / (maiorValor + 1);
+                baldes[posicaoBalde].add(numeros[i]);
+            }
+
+            // Ordena cada balde em ordem **decrescente**
+            for (int i = 0; i < quantidadeBaldes; i++) {
+                Collections.sort(baldes[i], Collections.reverseOrder());
+            }
+
+            // Junta os baldes do **último para o primeiro**
+            int indice = 0;
+            for (int i = quantidadeBaldes - 1; i >= 0; i--) {
+                for (int j = 0; j < baldes[i].size(); j++) {
+                    numeros[indice] = baldes[i].get(j);
+                    indice++;
                 }
             }
         }
@@ -337,4 +372,5 @@ public class Trabalho_Pratico_AEDS {
         //ordenacao_CountingSort();
         ordenacao_RadixSort();
     }
+
 }
